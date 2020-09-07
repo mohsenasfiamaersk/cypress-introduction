@@ -1,0 +1,19 @@
+{
+  "name": "cypress-introduction",
+  "version": "1.0.0",
+  "description": "## Install the npm http-server ```bash npm install --global http-server ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohsenasfiamaersk/cypress-introduction.git"
+  },
+  "author": "Mohsen Asfia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohsenasfiamaersk/cypress-introduction/issues"
+  },
+  "homepage": "https://github.com/mohsenasfiamaersk/cypress-introduction#readme"
+}
