@@ -36,10 +36,18 @@
 - Open source
 - Unit, integration and e2e
 
+Note: Cypress also offers you a dashboard which can be used to manage the test results and snapshots, etc, but it's subscription based.
+
 
  - JS 
  - Mocha
  - Chai
+
+Note: 
+- JS: Scripts are written in JS.
+- Mocha is the testing framework.
+- Chai is the assertion library.
+- It's different from selenium, it runs remote commands through network but cypress runs in the same loop as the application which enables us to be able to for instance stub the Dom api
 
 
 ### Nice Features
@@ -50,6 +58,15 @@
 - Automatic waiting
 - Network traffic control
 - Screenshots and videos
+
+Note:
+- Time travel: it screenshots as the test runs
+- Real time reload: it automatically re-runs your tests whenever you make changes to it
+- Spies, stubs and clocks
+- Debuggability readable errors and stack traces, no more guess why the tests are failing
+- Automatic waiting, it automatically waits for tests and assertions to run, so no longer need for writing sleep and waits on our own
+- Network traffic control, we can easily control, stub and test edge cases without involving our server, you can stub network traffic however you like
+- Screenshots and videos: Screenshots are taken on failure and videos of our entire test suite are recorded
 
 
 
@@ -67,6 +84,17 @@ cypress
 |   cypress.json
 ```
 
+Note:
+- fixtures: Holds external pieces of static data which can be used by our tests
+- integration: It does all the heavy lifting all the test files are located here
+- plugins: where we can import and load our plugins through the index.js file
+- support: which contains commands.js and index.js:
+  `index.js` is to store global configs and behaviours which modifies cypress
+  `commands.js` is to make custom commands or to override existing commands
+- cypress.json which contains project configurations, base url, environment specific configs and so on
+- cypress uses mocha framework so tests start with a describe and then one or more ‘it’. Describe contains collection of tests
+
+
 
 ## Setting Up Cypress
 As simple as 
@@ -76,6 +104,9 @@ npm install cypress
 
 
 ### Before Cypress
+
+Note: 
+- whereas before cypress you would need to choose ...
 
 
 - Framework
@@ -95,10 +126,29 @@ npm install cypress
   - Nightwatch
   - Web driver
 
+Note: 
+- Install selenium and choose a selenium wrapper like:
+
 
 - Additional libraries
 	- Sinon
 	- TestDouble
+
+Note: 
+```bash
+mkdir test-project
+```
+```bash
+cd test-project
+```
+```bash
+code .
+```
+Open terminal and run: 
+```bash
+npm init
+```
+Which is used to manage the project dependencies in order to create `package.json` 
 
 
 
@@ -109,30 +159,49 @@ npm install cypress
 cy.visit('/');
 ```
 
+Note:
+is a command to launch a web application
+
 
 ```js
 cy.get('input[type="email"]')
 ```
+
+Note:
+is to select an element which will look for an element with the properties that we write
 
 
 ```js
 cy.get('input[type="email"]').type('mohsen.asfia@maersk.com')
 ```
 
+Note:
+is to type into an element
+
 
 ```js
 cy.get('.btn').contains('User profile')
 ```
+
+Note:
+- it means select all .btn but only the ones that has a label of ‘User profile’
 
 
 ```js
 cy.get('.btn').should('be.visible')
 ```
 
+Note:
+Test doesn’t have to have an assertion, cypress has builtin assertions for instance visit checkes that the content is html and status is 200, cy.get asserts if the element exists and cy.get().contains asserts if a particular element exists and .click() verifies if the element is in an actionble state.
+should(‘be.visible’) —> is to check element exists and visible
+
 
 ```js
 cy.get('.btn').text()
 ```
+
+Note:
+In order to verify text withing an element.
 
 
 
@@ -156,11 +225,17 @@ cy.location('protocol').should('eq', 'https')
 cy.contains('your feed').should('be.visible')
 ```
 
+Note:
+- To verify that we’re in a correct page for instance
+
 
 ### Change The Timeout on a Command
 ```js
 cy.contains('your feed', { timeout: 10000 }).should('be.visible')
 ```
+
+Note:
+`contains` and `get` function do have a default timeout of 4 seconds if it exceeds that amount then it will fail, meanwhile the second parameter is to extend
 
 
 ### Verify The URL Hash
@@ -168,6 +243,9 @@ cy.contains('your feed', { timeout: 10000 }).should('be.visible')
 cy.hash().should('include', '#/editor')
 cy.location('hash').should('include', '#/editor')
 ```
+
+Note:
+to verify a url hash we can use the command hash
 
 
 ### Current URL of The Application
@@ -266,6 +344,10 @@ describe('fave icon', () => {
 })
 ```
 
+Note:
+- With `cypress.config()` you can override configurations in cypress config file
+- In cypress UI if you go to settings tab there you can see all configurations applied to your cypress
+
 
 
 ## .then(() => { ... }) command
@@ -301,6 +383,13 @@ describe('a suite', () => {
 })
 ```
 
+Note:
+- We alias elements so we can access and re-use them.
+- Re-use Dom elements: the object that we receive in the then command is only available within the then function but what if we wanna access it later?
+- This creates a closure around `text` so we can access it.
+- Redefine text reference
+- Now text is available to us, but this is not a great solution :(
+
 
 ```js [2|6]
 beforeEach(() => {
@@ -311,6 +400,10 @@ it('has access to text', function () {
   this.text // or cy.get('@text')
 })
 ```
+
+Note:
+- Alias the $btn.text() as `text`
+- Is now available
 
 
 
@@ -355,6 +448,9 @@ describe('Unit Test FizzBuzz', () => {
 })
 ```
 
+Note:
+Will only run that test in that file but hooks will be always executed
+
 
 ### Skip
 ```js [12]
@@ -388,6 +484,10 @@ describe('Unit Test FizzBuzz', () => {
 ```bash
 npx cypress run --browser firefox
 ```
+
+Note:
+- Cypress automatically detects available browsers on your OS
+- You can also do that in the Cypress UI
 
 
 #### Currenlty supported browsers
@@ -439,6 +539,9 @@ export class SearchPage {
   }
 }
 ```
+
+Note:
+We split the elements into different files based upon the page they appear on
 
 
 ### Consumption of a Page Object Model
@@ -539,11 +642,17 @@ When(`I type my username into the login form and press Enter`, () => {
 
 ## Testing APIs
 
+Note:
+Cypress makes http requests with cy.request command.
+
 
 ### Get
 ```js
 cy.request('GET', 'http://google.com/api/places?id=2000')
 ```
+
+Note:
+Get is the. Default method and no need. To provide it
 
 
 ### Inspecting The Response Object
@@ -554,6 +663,9 @@ cy.request('GET', 'http://google.com/api/places?id=2000').then((response) => {
     expect(response.body.data).to.have.length(20);
 });
 ```
+
+Note:
+`Then` function we can assert for instance the. status code, or inspect length of a property, or existance of a property, etc.
 
 
 ### Post
@@ -585,6 +697,12 @@ cy.route({
 })
 ```
 
+Note:
+- Enable response stubbing
+- Route all GET requests
+- That have a URL that matches '/users/*'
+- And force the response to be: []
+
 
 #### Mock The Response
 ```js [1|3|4]
@@ -608,6 +726,11 @@ cy.wait(['@getActivities', '@getMessages'])
 
 cy.get('h1').should('contain', 'Dashboard')
 ```
+
+Note:
+- Visit the dashboard, which should make requests that match the two routes above
+- Pass an array of Route Aliases that forces Cypress to wait until it sees a response for each request that matches each of these aliases
+- These commands will not run until the wait command resolves above
 
 
 #### Verify Multiple Requests
@@ -647,6 +770,10 @@ cy.get('#results')
   .and('contain', 'Book 2')
 ```
 
+Note:
+- Our autocomplete field is throttled meaning it only makes a request after 500ms from the last keyPress
+- Wait for the request + response thus insulating us from the throttled request
+
 
 #### Autocomplete Example with Inspecting the XHR Object
 
@@ -663,6 +790,9 @@ cy.get('#results')
   .should('contain', 'Book 1')
   .and('contain', 'Book 2')
 ```
+
+Note:
+- This yields us the XHR object which includes fields for request, response, url, method, etc
 
 
 ##### Multiple assertion on XHR object with a single "should" callback
@@ -696,6 +826,12 @@ cy.get('@new-user')
   })
 ```
 
+Note:
+- We can grab the completed XHR object again to run more assertions using cy.get(<alias>)
+- Yields the same XHR object
+- And we can place multiple assertions in a single "should" callback
+- It is a good practice to add assertion messages as the 2nd argument to expect()
+
 
 
 ## Open Cypress UI
@@ -703,6 +839,13 @@ In order to run cypress locally
 ```bash
 npx cypress open
 ```
+
+Note:
+- Cypress UI lists all the test files that we’ve created clicking on any of them will show the test runner which consists of:
+- Command log
+- Application preview
+- Header
+- Selector playground which helps you to identify the elements on the page and then you’d be able to copy the command and use it in your tests.
 
 
 
