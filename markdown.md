@@ -4,11 +4,9 @@
 ##### Ace (Automated Cargo Execution)
 
 
-### Miss you all!
-![Picnic](service-delivery.jpg)
 
-
-# test
+### 
+![Copenhill Race](dynamic-net.png)
 
 
 
